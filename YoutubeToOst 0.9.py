@@ -7,7 +7,7 @@ import os 				       #Для работы с путем файла
 
 root = Tk()
 root.title("Youtube playlist viewer")
-root.geometry("915x600")
+root.geometry("915x500")
 
 links = []   #Массив с ссылками на видео
 info_t = []  #Массив с названием видео
@@ -36,7 +36,7 @@ def find_links():
 	print(links)
 	 
 	for i in range(len(links)):
-		if i == 3: break
+		#if i == 3: break      #Для отладки, чтобы не скачивать слишком много видео
 		lb_status.configure(text = f'Обрабатываю видео #{i+1}')
 		print(links[i])
 		data_links.append(i)
