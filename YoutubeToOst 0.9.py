@@ -36,7 +36,7 @@ def find_links():
 	print(links)
 	 
 	for i in range(len(links)):
-		#if i == 3: break      #Для отладки, чтобы не скачивать слишком много видео
+		if i == 3: break      #Для отладки, чтобы не скачивать слишком много видео
 		lb_status.configure(text = f'Обрабатываю видео #{i+1}')
 		print(links[i])
 		data_links.append(i)
@@ -117,7 +117,10 @@ def download():
 	for i in selected:
 		k += 1
 		yt = YouTube(links[i])
-		video = yt.streams.filter(only_audio=True).first()
+		#video = yt.streams.filter(only_audio=True)#.last()#.get_highest_resolution()#.first()
+		#for i in video: print(i)
+		video = yt.streams.filter(only_audio=True, abr="128kbps").first()
+		print(video)
 		out_file = video.download(output_path=dirname)
 		base, ext = os.path.splitext(out_file)
 		new_file = base + '.mp3'
@@ -140,12 +143,14 @@ def download_n():
 		k += 1
 		print(views_links[i][1])
 		yt = YouTube(views_links[i][1])
-		video = yt.streams.filter(only_audio=True).first()
+		video = yt.streams.filter(only_audio=True, abr="128kbps").first()
+		#video = yt.streams.filter(only_audio=True).first()#.get_highest_resolution()#.first()
+		print(video)
 		out_file = video.download(output_path=dirname)
 		base, ext = os.path.splitext(out_file)
 		new_file = base + '.mp3'
 		os.rename(out_file, new_file)
-		lb_status.configure(text = f'Загружен {k} трек из {len(selected)}')
+		lb_status.configure(text = f'Загружен {k} трек из {kol}')
 		root.update()
 		
 	print("Download completed!")
@@ -159,7 +164,8 @@ lb1.grid(row = 1, column = 0, columnspan = 2, padx = 10)
 
 playlist_en = Entry(width = 50)
 playlist_en.grid(row = 1, column = 2, columnspan = 3)
-playlist_en.insert(0, "https://www.youtube.com/watch?v=qDnrdeNDRio&list=PL4CFrY25ig_hqow33aufz3L8w5Xv4oK00&ab_channel=DavidJ.")
+playlist_en.insert(0, "https://www.youtube.com/watch?v=Jrg9KxGNeJY&list=PLN_ISN--vzwJCGP9fei2IkRNdjfUQFWrk")
+#playlist_en.insert(0, "https://www.youtube.com/watch?v=qDnrdeNDRio&list=PL4CFrY25ig_hqow33aufz3L8w5Xv4oK00&ab_channel=DavidJ.")
 #playlist_en.insert(0, "https://www.youtube.com/watch?v=lcJzw0JGfeE&list=PLqM7alHXFySENpNgw27MzGxLzNJuC_Kdj")
 
 btn_playlist = Button(text = 'Найти!', command = find_links, width = 10)
